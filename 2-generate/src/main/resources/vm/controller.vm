@@ -1,0 +1,29 @@
+package ${packageController};
+
+import bebetter.basejpa.controller.${baseController};
+import bebetter.jpa.base.BaseDao;
+import ${packageEntity}.${nameUp};
+import ${packageDao}.${nameUp}Dao;
+import ${packageService}.${nameUp}Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+* ${label}
+*/
+@RestController
+@RequestMapping("/${name}")
+public class ${nameUp}Controller extends ${baseController}<${nameUp}> {
+    @Autowired
+    ${nameUp}Service service;
+
+
+
+    @Override
+    public Class<? extends BaseDao<${nameUp}>> getDaoClass() {
+        return ${nameUp}Dao.class;
+    }
+}
+
+

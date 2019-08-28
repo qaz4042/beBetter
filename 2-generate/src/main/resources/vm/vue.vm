@@ -1,0 +1,178 @@
+<template>
+	<div>
+		<v-hover v-slot:default="{ hover }"   transition="slide-y-transition">
+			<v-card class="mx-3 px-3 mt-12">    <!--表格-->
+				<v-expand-transition>
+					<zzofferset :offset="hover ? 25 : 10">
+						<v-card color="primary" class="title " :elevation="10" dark>
+							{{${name}_label}}列表	<!-- v-icon -->
+						</v-card>
+					</zzofferset>
+				</v-expand-transition>
+				<v-row class="mx-0" align="center" justify="end">
+					<v-btn color="primary" large outlined @click="${name}ToAdd">
+						<v-icon left>add</v-icon>添加
+					</v-btn>
+					<v-btn color="primary" large outlined @click="${name}Page" class="mx-5">
+						<v-icon left>search</v-icon>查询
+					</v-btn>
+				</v-row>
+				<!--查询条件-->
+				<v-layout wrap>
+					<v-flex class="px-1" xs6 sm3 md2>
+						<zzdate hide-details v-model="${name}_page_param.startTimes" label="起始时间"></zzdate>
+					</v-flex >
+					<v-flex class="px-1" xs6 sm3 md2>
+						<zzdate hide-details v-model="${name}_page_param.endTimes" label="结束时间" :allowedDates="zz.fun_dateCompare(${name}_page_param.startTimes,false,true)"></zzdate>
+					</v-flex >
+					#foreach($column in $columns)
+						#if($column.inputType != "date")
+							<v-flex class="px-1" xs6 sm3 md2>
+								#if($column.inputType == "text")
+									<zzinput hide-details clearable v-model="${name}_page_param.$column.name" :label="${name}_labels.$column.name"></zzinput>
+								#elseif($column.inputType == "number")
+									<v-text-field hide-details clearable v-model="${name}_page_param.$column.name" :label="${name}_labels.$column.name"></v-text-field>
+								#elseif($column.inputType == "textarea")
+									<v-text-field hide-details clearable v-model="${name}_page_param.$column.name" :label="${name}_labels.$column.name"></v-text-field>
+								#elseif($column.inputType == "select")
+									<zzselect hide-details clearable v-model="${name}_page_param.$column.name" classname="${column.classname}" :label="${name}_labels.$column.name"></zzselect>
+								#elseif($column.inputType == "checkbox")
+									<zzselect hide-details clearable v-model="${name}_page_param.$column.name" :label="${name}_labels.$column.name" :items="items_boolean"></zzselect>
+								#elseif($column.inputType == "datetime")
+									<zzdatetime hide-details clearable v-model="${name}_page_param.$column.name" :label="${name}_labels.$column.name"></zzdatetime>
+								#elseif($column.inputType == "time")
+									<zztime hide-details clearable hide-details clearable v-model="${name}_page_param.$column.name" :label="${name}_labels.$column.name"></zztime>
+								#elseif($column.inputType == "json")
+									<v-text-field hide-details clearable v-model="${name}_page_param.$column.name" :label="${name}_labels.$column.name"></v-text-field>
+								#elseif($column.inputType == "complextext")
+									<v-text-field hide-details clearable v-model="${name}_page_param.$column.name" :label="${name}_labels.$column.name"></v-text-field>
+								#elseif($column.inputType == "image")
+									<v-text-field hide-details clearable v-model="${name}_page_param.$column.name" :label="${name}_labels.$column.name"></v-text-field>
+								#else
+								#end
+							</v-flex>
+						#end
+					#end
+				</v-layout>
+				<v-divider></v-divider>
+				<!--表格-->
+				<v-data-table
+						:headers="${name}_headers"
+						:items="${name}s"
+						:server-items-length="${name}_total"
+						:loading="${name}_loading"
+						:footerProps="{itemsPerPageOptions:[10,50,500]}"
+						:page.sync="${name}_pagein.curr"
+						:items-per-page.sync="${name}_pagein.size"
+						:sort-by.sync="${name}_pagein.sortProps"
+						:sort-desc.sync="${name}_pagein.sortDesc"
+						multi-sort
+				>
+					#foreach($column in $columns)
+						#if($column.inputType == "text")
+						#elseif($column.inputType == "number")
+						#elseif($column.inputType == "textarea")
+						#elseif($column.inputType == "select")
+							<template v-slot:item.$column.name="{ item }">
+								<zzspanDict :value="item.$column.name" classname="$column.classname"></zzspanDict>
+							</template>
+						#elseif($column.inputType == "checkbox")
+							<template v-slot:item.$column.name="{ item }">
+								<zzspan :value="item.$column.name"></zzspan>
+							</template>
+						#elseif($column.inputType == "datetime")
+						#elseif($column.inputType == "time")
+						#elseif($column.inputType == "json")
+						#elseif($column.inputType == "complextext")
+						#elseif($column.inputType == "image")
+						#else
+						#end
+					#end
+					<template v-slot:item.action="{ item }">
+						<v-btn color="primary" outlined class="mr-2" @click="${name}ToEdit(item)">
+							<v-icon left>edit</v-icon>
+							编辑
+						</v-btn>
+						<v-menu offset-x>
+							<template v-slot:activator="{ on }">
+								<v-btn small color="warning" v-on="on" outlined class="pa-0">
+									<v-icon>delete</v-icon>
+								</v-btn>
+							</template>
+							<v-btn small color="warning" outlined @click="${name}Delete(item)">
+								确认删除
+							</v-btn>
+						</v-menu>
+					</template>
+				</v-data-table>
+			</v-card>
+		</v-hover>
+		<!--编辑框-->
+		<v-dialog v-model="${name}_dialog" max-width="600px">
+			<v-card :loading="${name}_loading">
+				<v-card-title class="headline grey lighten-4" primary-title>
+					{{ ${name}_opt + ' ' + ${name}_label }}
+				</v-card-title>
+				<v-card-text>
+					<v-form ref="${name}_form">
+						<v-container grid-list-md>
+							<v-layout wrap>
+								#foreach($column in $columns)
+									<v-flex xs12 sm6 md4>
+										#if($column.inputType == "text")
+											<v-text-field v-model="${name}_form.$column.name" :label="${name}_labels.$column.name" :rules="$column.ruleArray"></v-text-field>
+										#elseif($column.inputType == "number")
+											<v-text-field v-model="${name}_form.$column.name" :label="${name}_labels.$column.name" :rules="$column.ruleArray"></v-text-field>
+										#elseif($column.inputType == "textarea")
+											<v-text-field v-model="${name}_form.$column.name" :label="${name}_labels.$column.name" :rules="$column.ruleArray"></v-text-field>
+										#elseif($column.inputType == "select")
+											<zzselect v-model="${name}_form.$column.name" classname="${column.classname}" :label="${name}_labels.$column.name" :rules="$column.ruleArray"></zzselect>
+										#elseif($column.inputType == "checkbox")
+											<zzcheckbox v-model="${name}_form.$column.name" :label="${name}_labels.$column.name" :rules="$column.ruleArray"></zzcheckbox>
+										#elseif($column.inputType == "datetime")
+											<zzdatetime v-model="${name}_form.$column.name" :label="${name}_labels.$column.name" :rules="$column.ruleArray"></zzdatetime>
+										#elseif($column.inputType == "time")
+											<zztime v-model="${name}_form.$column.name" :label="${name}_labels.$column.name" :rules="$column.ruleArray"></zztime>
+										#elseif($column.inputType == "json")
+											<v-text-field v-model="${name}_form.$column.name" :label="${name}_labels.$column.name" :rules="$column.ruleArray"></v-text-field>
+										#elseif($column.inputType == "complextext")
+											<v-text-field v-model="${name}_form.$column.name" :label="${name}_labels.$column.name" :rules="$column.ruleArray"></v-text-field>
+										#elseif($column.inputType == "image")
+											<v-text-field v-model="${name}_form.$column.name" :label="${name}_labels.$column.name" :rules="$column.ruleArray"></v-text-field>
+										#else
+										#end
+									</v-flex>
+								#end
+							</v-layout>
+						</v-container>
+					</v-form>
+				</v-card-text>
+				<v-divider></v-divider>
+				<v-card-actions class="pa-0 d-inline">
+					<v-row class="pa-0 ma-0">
+						<v-col class="pa-0">
+							<v-btn x-large block text @click="${name}_dialog = false">取消</v-btn>
+						</v-col>
+						<v-col class="pa-0">
+							<v-btn color="primary" x-large block text @click="${name}Add" v-if="${name}_opt === '添加'">{{${name}_opt}}</v-btn>
+							<v-btn color="primary" x-large block text @click="${name}Update" v-else :disabled="${name}_loading">{{${name}_opt}}</v-btn>
+						</v-col>
+					</v-row>
+				</v-card-actions>
+			</v-card>
+		</v-dialog>
+	</div>
+</template>
+
+<script>
+	import mixin_${name} from './mixin_${name}'
+	export default {
+		name: '${name}',
+		mixins: [
+			mixin_${name},
+		],
+	}
+</script>
+<!--<style scoped lang="scss">-->
+
+<!--</style>-->

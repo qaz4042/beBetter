@@ -1,0 +1,14 @@
+package ${packageService};
+
+import ${packageDao}.${nameUp}Dao;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class ${nameUp}Service {
+    @Autowired
+    ${nameUp}Dao dao;
+
+
+
+}

@@ -1,0 +1,114 @@
+const ${name}_headers = [
+#foreach($column in $columns)
+    {text: '$column.label', value: '$column.name',sortable: $column.sortable,},
+#end
+	{text: '', value: 'action', sortable: false,},// align: 'center',
+]
+export default {
+	// name: '${name}_mixin',
+	data: () => ({
+		${name}_label: '${label}', //中文名(标题)
+		${name}_loading: false,//正在请求数据loading
+		${name}_new: {	//新建时的默认值
+	#foreach($column in $columns)
+		#if($column.defValue)
+			$column.name: $column.defValue,
+		#end
+	#end
+		},
+        ${name}_headers: ${name}_headers,
+	    ${name}_labels: zz.listToMap(${name}_headers, 'value', 'text'),//字段名
+		${name}_page_param: {
+			startTimes: new Date().zzaddDay(-7).zzdate(),
+			endTimes: null,
+		},
+		${name}_pagein: {
+			curr: 1,//当前页码
+			size: 10,//一页几行
+			sortProps: [],//排序字段 List<String>
+			sortDesc: [],//是不是倒序 List<Boolean>
+		},
+		${name}s: [],		//列表
+		${name}_total: 0,//总行数
+		${name}_dialog: false,//弹窗是否显示
+		${name}_opt: null,//添加 / 编辑
+		${name}_formold: {},//暂存
+		${name}_form: {},	//当前对象
+		// ${name}_selected: [],
+	}),
+	computed: {},
+	watch: {
+		'${name}_pagein': {
+			handler: function(newVal,oldVal){
+				this.${name}Page()
+			},
+			deep: true
+		}
+	},
+	created() {
+		this.asyncCreated()
+	},
+	methods: {
+		async asyncCreated() {
+			await this.${name}Page()
+			//console.log('userList()', await this.userList({sex:'女'}))
+		},
+		//分页查询
+		async ${name}Page() {
+			await this.zztry('${name}_loading', async () => {
+				let page = await zz.page('${name}', {...this.${name}_pagein,...this.${name}_page_param})
+				this.${name}s = page.content
+				this.${name}_total = page.total
+			})
+		},
+		async ${name}List(param) {
+			return 	await this.zztry('${name}_loading', async () => {
+				this.${name}s = await zz.list('${name}', param)
+				return this.${name}s
+			})
+		},
+		async ${name}One() {
+			await this.zztry('${name}_loading', async () => {
+				this.${name}_form = await zz.one('${name}', this.${name}_form)
+				this.${name}s.unshift(this.${name}_form)
+				this.${name}_dialog = false
+			})
+		},
+		${name}ToAdd() {
+			this.${name}_form = {...this.${name}_new}
+			this.${name}_opt = '添加'
+			this.${name}_dialog = true
+		},
+		${name}ToEdit(${name}) {
+			this.${name}_formold = ${name}
+			this.${name}_form = {...${name}}
+			this.${name}_opt = '编辑'
+			this.${name}_dialog = true
+		},
+		async ${name}Add() {
+			await this.zztry('${name}_loading', async () => {
+				if (this.$refs.${name}_form.validate()) {
+					this.${name}_form.id = await zz.add('${name}', this.${name}_form)
+					this.${name}s.unshift(this.${name}_form)
+					this.${name}_dialog = false
+				}
+			})
+		},
+		async ${name}Delete(${name}) {
+			await this.zztry('${name}_loading', async () => {
+				await zz.delete('${name}', ${name}.id)
+				this.${name}s.remove(${name})
+			})
+		},
+		async ${name}Update() {
+			await this.zztry('${name}_loading', async () => {
+				if (this.$refs.${name}_form.validate()) {
+					await zz.update('${name}', this.${name}_form)
+					let index = this.${name}s.indexOf(this.${name}_formold)
+					this.${name}s.splice(index, 1, this.${name}_form)
+					this.${name}_dialog = false
+				}
+			})
+		},
+	},
+}

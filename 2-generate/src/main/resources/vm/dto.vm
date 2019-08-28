@@ -1,0 +1,16 @@
+package ${packageDto};
+
+import lombok.Data;
+#foreach($class in $importClasses)
+import $class;
+#end
+
+@Data
+public class ${nameUp}Dto {
+
+
+#foreach($column in $columns)
+    $column.classname $column.name;
+#end
+
+}

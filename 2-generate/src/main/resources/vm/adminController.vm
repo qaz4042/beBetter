@@ -1,0 +1,27 @@
+package ${packageAdminController};
+
+import ${packageEntity}.${nameUp};
+import ${packageDao}.${nameUp}Dao;
+import ${packageService}.${nameUp}Service;
+import bebetter.jpa.base.BaseDao;
+import bebetter.basejpa.controller.BaseAdminController;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+/**
+* 后台管理 ${label}
+*/
+@RestController
+@RequestMapping("/${name}")
+public class Admin${nameUp}Controller extends BaseAdminController<${nameUp}> {
+	@Autowired
+	${nameUp}Service service;
+
+
+
+	@Override
+	public Class<? extends BaseDao<${nameUp}>> getDaoClass() {
+	    return ${nameUp}Dao.class;
+	}
+}

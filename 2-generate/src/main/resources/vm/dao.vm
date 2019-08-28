@@ -1,0 +1,9 @@
+package ${packageDao};
+
+import bebetter.jpa.base.BaseDao;
+import ${packageEntity}.${nameUp};
+
+public interface ${nameUp}Dao extends BaseDao<${nameUp}> {
+
+
+}
