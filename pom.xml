@@ -16,41 +16,42 @@
     <description>Demo project for Spring Boot</description>
     <modules>
         <module>1-statics</module>
-        <module>2-jpa</module>
+        <module>2-mybatis-plus</module>
         <module>2-generate</module>
-        <module>3-common</module>
+        <module>2-web</module>
+        <module>99-demo</module>
     </modules>
     <properties>
         <java.version>1.8</java.version>
+        <mybatis-plus.version>3.4.1</mybatis-plus.version>
+        <hutool.version>5.3.5</hutool.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <!-- 重点 -->
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
     </properties>
-    <dependencyManagement>
-        <dependencies>
-            <!--            <dependency>-->
-            <!--                <groupId>bebetter</groupId>-->
-            <!--                <artifactId>basejpa</artifactId>-->
-            <!--                <version>0.0.1-SNAPSHOT</version>-->
-            <!--            </dependency>-->
-            <!--             <dependency>-->
-            <!--                 <groupId>bebetter</groupId>-->
-            <!--                 <artifactId>generate</artifactId>-->
-            <!--                 <version>0.0.1-SNAPSHOT</version>-->
-            <!--             </dependency>-->
-        </dependencies>
-    </dependencyManagement>
     <dependencies>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-test</artifactId>
-            <scope>test</scope>
-        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <scope>compile</scope>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.0</version>
+                <configuration>
+                    <release>11</release>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-source-plugin</artifactId>

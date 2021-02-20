@@ -1,7 +1,7 @@
 package bebetter.basejpa.enumsaver;
 
-import bebetter.jpa.base.BaseDao;
-import bebetter.jpa.model.Cond;
+import bebetter.mybatisplus.base.BaseDao;
+import bebetter.mybatisplus.model.Cond;
 import cn.hutool.core.bean.BeanUtil;
 import lombok.SneakyThrows;
 

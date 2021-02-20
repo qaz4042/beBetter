@@ -14,12 +14,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface GColumn {
     String value() default "";//中文名
 
-    EnumInputType type() default EnumInputType.none;//界面input框类型
+    EnumInputType type() default EnumInputType.auto;//界面input框类型
 
     /**
-     * 例如 [ rule_require('邮箱'), rule_email() ]
-     * rule_require('邮箱')
-     * rule_email()
+     * 例如 [ rule_require, rule_email]
+     * rule_require
+     * rule_email
      * rule_length(6,20)
      * rule_max_min(0,1000)
      */

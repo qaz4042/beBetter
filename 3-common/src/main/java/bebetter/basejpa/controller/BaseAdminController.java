@@ -2,16 +2,15 @@ package bebetter.basejpa.controller;
 
 import bebetter.basejpa.model.vo.Pagein;
 import bebetter.basejpa.util.SpringUtils;
-import bebetter.jpa.base.BaseDao;
-import bebetter.jpa.datetimes.Dates;
-import bebetter.jpa.model.Cond;
+import bebetter.mybatisplus.base.BaseDao;
+import bebetter.mybatisplus.datetimes.Dates;
+import bebetter.mybatisplus.model.Cond;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.io.Serializable;
 import java.util.List;
 
 public abstract class BaseAdminController<T> {

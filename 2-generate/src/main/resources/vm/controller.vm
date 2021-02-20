@@ -1,7 +1,7 @@
 package ${packageController};
 
 import bebetter.basejpa.controller.${baseController};
-import bebetter.jpa.base.BaseDao;
+import bebetter.mybatisplus.base.BaseDao;
 import ${packageEntity}.${nameUp};
 import ${packageDao}.${nameUp}Dao;
 import ${packageService}.${nameUp}Service;

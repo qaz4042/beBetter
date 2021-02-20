@@ -6,7 +6,7 @@ import bebetter.basejpa.enumsaver.IEnumSaverDao;
 import bebetter.basejpa.enumsaver.IEnumSaverEnum;
 import bebetter.basejpa.util.CollectionUtil;
 import bebetter.basejpa.util.DictEnumUtil;
-import bebetter.jpa.model.Cond;
+import bebetter.mybatisplus.model.Cond;
 import bebetter.statics.util.V;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;

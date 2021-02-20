@@ -3,7 +3,7 @@ package ${packageAdminController};
 import ${packageEntity}.${nameUp};
 import ${packageDao}.${nameUp}Dao;
 import ${packageService}.${nameUp}Service;
-import bebetter.jpa.base.BaseDao;
+import bebetter.mybatisplus.base.BaseDao;
 import bebetter.basejpa.controller.BaseAdminController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;

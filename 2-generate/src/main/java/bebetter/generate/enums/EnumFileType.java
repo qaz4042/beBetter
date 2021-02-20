@@ -1,6 +1,6 @@
 package bebetter.generate.enums;
 
-import bebetter.generate.model.GiEntity;
+import bebetter.generate.model.GenerateEntityInfo;
 import bebetter.statics.constant.C;
 import bebetter.statics.model.KnowException;
 import lombok.AllArgsConstructor;
@@ -8,7 +8,6 @@ import lombok.Getter;
 import org.apache.velocity.Template;
 import org.apache.velocity.app.Velocity;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,6 +17,7 @@ import java.util.Map;
 @AllArgsConstructor
 @Getter
 public enum EnumFileType {
+    /***/
     admin_vue(
             "vueadmin",
             "vm/adminVue.vm"
@@ -56,7 +56,6 @@ public enum EnumFileType {
             "vm/dto.vm"
     ),
     ;
-    public static final String split = File.separator;
     String subFolder;
     String templatePath;
 
@@ -83,11 +82,12 @@ public enum EnumFileType {
                 return nameUp + "Dao.java";
             case dto:
                 return nameUp + "Dto.java";
+            default:
+                throw new KnowException("还未定义的文件类型:" + this);
         }
-        throw new KnowException("还未定义的文件类型:" + this);
     }
 
-    public Template getTemplate(GiEntity entity) {
+    public Template getTemplate(GenerateEntityInfo entity) {
         String entityName = entity.getName();
         Template template = tmpMap.get(entityName + this.name());
         if (null == template) {

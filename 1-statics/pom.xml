@@ -12,4 +12,15 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>1-statics</name>
     <description>极度精简 静态类工具包</description>
+    <dependencies>
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>${hutool.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+    </dependencies>
 </project>

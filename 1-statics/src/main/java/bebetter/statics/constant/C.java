@@ -7,6 +7,10 @@ import java.nio.charset.Charset;
  * Contant常量
  */
 public class C {
+
+    public static final String SYS_PACKAGE = "bebetter";
+    public static final String SYS_FILE_SAVEPATH = "bebetter.file.savePath";
+
     public static final Long _1Mb = 1024 * 1024L;
 
     public static final String k_空字符 = "";

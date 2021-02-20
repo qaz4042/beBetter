@@ -1,13 +1,11 @@
 package bebetter.basejpa.controller;
 
-import bebetter.basejpa.model.base.BaseUser;
 import bebetter.basejpa.model.base.Id_CreateTime;
 import bebetter.basejpa.model.vo.Pagein;
 import bebetter.basejpa.util.SpringUtils;
-import bebetter.jpa.base.BaseDao;
-import bebetter.jpa.datetimes.Dates;
-import bebetter.jpa.model.Cond;
-import bebetter.statics.model.KnowException;
+import bebetter.mybatisplus.base.BaseDao;
+import bebetter.mybatisplus.datetimes.Dates;
+import bebetter.mybatisplus.model.Cond;
 import lombok.SneakyThrows;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.validation.annotation.Validated;
